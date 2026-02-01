@@ -32,7 +32,8 @@
 <div class="product-detail">
 <div>
 {% if product.image %}
-<img src="{% static 'images/' %}{{ product.image }}">
+<img src="{{ product.image.url }}">
+
 
 
 {% endif %}

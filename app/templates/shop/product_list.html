@@ -114,7 +114,8 @@
 
     <div class="product-img">
       {% if p.image %}
-        <img src="{% static 'images/' %}{{ p.image }}" alt="{{ p.name }}">
+        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+ 
 
       {% else %}
         <span>No Image</span>
