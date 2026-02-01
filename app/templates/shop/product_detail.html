@@ -1,5 +1,8 @@
 {% extends 'shop/base.html' %}
+{% load static %}
+
 {% load humanize %}
+
 {% block title %}{{ product.name }}{% endblock %}
 
 {% block content %}
@@ -29,7 +32,9 @@
 <div class="product-detail">
 <div>
 {% if product.image %}
-<img src="{{ product.image.url }}">
+<img src="{% static 'images/' %}{{ product.image }}">
+
+
 {% endif %}
 </div>
 
