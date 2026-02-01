@@ -1,0 +1,56 @@
+{% extends 'shop/base.html' %}
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+<style>
+.checkout-card{
+  max-width:600px;
+  background:#fff;
+  margin:auto;
+  padding:24px;
+  border-radius:12px;
+  box-shadow:0 20px 40px rgba(0,0,0,.12);
+}
+.checkout-card h2{text-align:center;}
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+.form-grid input,
+.form-grid textarea{
+  width:100%;
+  padding:10px;
+  border-radius:8px;
+  border:1px solid #d1d5db;
+}
+.form-grid textarea{grid-column:1/-1;}
+.place-btn{
+  margin-top:16px;
+  width:100%;
+  padding:12px;
+  background:#2874f0;
+  color:#fff;
+  border:none;
+  border-radius:8px;
+}
+</style>
+
+<div class="checkout-card">
+<h2>Checkout</h2>
+
+<form method="post">
+{% csrf_token %}
+<div class="form-grid">
+<input name="full_name" placeholder="Full Name" value="{{ user.get_full_name }}">
+<input name="email" type="email" placeholder="Email" value="{{ user.email }}">
+<input name="phone" placeholder="Phone">
+<input name="city" placeholder="City">
+<input name="state" placeholder="State">
+<input name="pincode" placeholder="Pincode">
+<textarea name="address" placeholder="Full Address"></textarea>
+</div>
+<button class="place-btn">Place Order</button>
+</form>
+</div>
+{% endblock %}

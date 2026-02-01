@@ -1,0 +1,45 @@
+{% extends 'shop/base.html' %}
+{% load humanize %}
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+<style>
+.product-detail{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:30px;
+}
+.product-detail img{
+  width:100%;
+  border-radius:12px;
+}
+.buy-btn{
+  background:#ff9f00;
+  padding:12px 20px;
+  border-radius:8px;
+  color:#000;
+  text-decoration:none;
+  display:inline-block;
+}
+@media(max-width:768px){
+  .product-detail{grid-template-columns:1fr;}
+}
+</style>
+
+<div class="product-detail">
+<div>
+{% if product.image %}
+<img src="{{ product.image.url }}">
+{% endif %}
+</div>
+
+<div>
+<h2>{{ product.name }}</h2>
+<p>{{ product.description }}</p>
+<p><strong>Category:</strong> {{ product.category.name }}</p>
+<h3>₹{{ product.price|intcomma }}</h3>
+<p>Stock: {{ product.stock }}</p>
+<a class="buy-btn" href="{% url 'cart_add' product.id %}">Add to Cart</a>
+</div>
+</div>
+{% endblock %}

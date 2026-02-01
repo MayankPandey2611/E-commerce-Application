@@ -1,0 +1,85 @@
+{% extends 'shop/base.html' %}
+{% load humanize %}
+{% block title %}Your Cart{% endblock %}
+
+{% block content %}
+<style>
+.cart-card{
+  background:#fff;
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 12px 30px rgba(0,0,0,.1);
+}
+.cart-item{
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr 1fr auto;
+  gap:12px;
+  align-items:center;
+  padding:14px 0;
+  border-bottom:1px solid #e5e7eb;
+}
+.cart-item:last-child{border:none;}
+.cart-total{
+  text-align:right;
+  font-size:18px;
+  font-weight:700;
+  margin-top:14px;
+}
+.qty-input{
+  width:60px;
+  padding:6px;
+}
+.btn{
+  padding:8px 14px;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  background:#2874f0;
+  color:#fff;
+}
+.btn-danger{background:#ef4444;}
+.checkout-btn{
+  margin-top:16px;
+  display:inline-block;
+  background:#16a34a;
+  padding:12px 20px;
+  color:#fff;
+  border-radius:8px;
+  text-decoration:none;
+}
+@media(max-width:768px){
+  .cart-item{
+    grid-template-columns:1fr;
+    gap:6px;
+  }
+}
+</style>
+
+<h2>Your Cart</h2>
+
+{% if items %}
+<div class="cart-card">
+  {% for it in items %}
+  <div class="cart-item">
+    <strong>{{ it.product.name }}</strong>
+    ₹{{ it.product.price|intcomma }}
+    <form method="post" action="{% url 'cart_update' it.product.id %}">
+      {% csrf_token %}
+      <input type="number" name="qty" min="0" value="{{ it.qty }}" class="qty-input">
+      <button class="btn">Update</button>
+    </form>
+    ₹{{ it.subtotal|intcomma }}
+    <a class="btn btn-danger" href="{% url 'cart_remove' it.product.id %}">Remove</a>
+  </div>
+  {% endfor %}
+
+  <div class="cart-total">
+    Total: ₹{{ total|intcomma }}
+  </div>
+
+  <a href="{% url 'checkout' %}" class="checkout-btn">Proceed to Checkout</a>
+</div>
+{% else %}
+<p>Your cart is empty.</p>
+{% endif %}
+{% endblock %}

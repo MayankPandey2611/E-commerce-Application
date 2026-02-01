@@ -1,0 +1,134 @@
+{% extends 'shop/base.html' %}
+{% load humanize %}
+{% block title %}Products{% endblock %}
+
+{% block content %}
+<style>
+/* Page heading */
+.page-title{
+  font-size:22px;
+  margin-bottom:18px;
+}
+
+/* Product Grid */
+.product-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));
+  gap:20px;
+}
+
+/* Card */
+.product-card{
+  background:#fff;
+  border-radius:14px;
+  padding:14px;
+  box-shadow:0 10px 25px rgba(0,0,0,.08);
+  transition:.25s ease;
+  display:flex;
+  flex-direction:column;
+}
+
+.product-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 18px 40px rgba(0,0,0,.15);
+}
+
+/* Image */
+.product-img{
+  height:180px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:12px;
+}
+
+.product-img img{
+  max-width:100%;
+  max-height:100%;
+  object-fit:contain;
+  transition:.3s;
+}
+
+.product-card:hover img{
+  transform:scale(1.05);
+}
+
+/* Title */
+.product-card h4{
+  font-size:15px;
+  font-weight:600;
+  margin:6px 0;
+  min-height:38px;
+}
+
+/* Price */
+.price{
+  font-size:17px;
+  font-weight:700;
+  color:#2874f0;
+  margin-bottom:10px;
+}
+
+/* Buttons */
+.card-actions{
+  margin-top:auto;
+  display:flex;
+  gap:8px;
+}
+
+.card-actions a{
+  flex:1;
+  text-align:center;
+  padding:9px;
+  border-radius:8px;
+  font-size:14px;
+  font-weight:600;
+  text-decoration:none;
+}
+
+.view-btn{
+  border:1px solid #2874f0;
+  color:#2874f0;
+}
+
+.add-btn{
+  background:#ff9f00;
+  color:#000;
+}
+
+/* Mobile tweak */
+@media(max-width:480px){
+  .page-title{font-size:18px;}
+}
+</style>
+
+<h2 class="page-title">
+  Products{% if current_category %} – {{ current_category.name }}{% endif %}
+</h2>
+
+<div class="product-grid">
+{% for p in products %}
+  <div class="product-card">
+
+    <div class="product-img">
+      {% if p.image %}
+        <img src="{{ p.image.url }}" alt="{{ p.name }}">
+      {% else %}
+        <span>No Image</span>
+      {% endif %}
+    </div>
+
+    <h4>{{ p.name }}</h4>
+    <div class="price">₹{{ p.price|intcomma }}</div>
+
+    <div class="card-actions">
+      <a class="view-btn" href="{% url 'product_detail' p.slug %}">View</a>
+      <a class="add-btn" href="{% url 'cart_add' p.id %}">Add</a>
+    </div>
+
+  </div>
+{% empty %}
+  <p>No products found</p>
+{% endfor %}
+</div>
+{% endblock %}
