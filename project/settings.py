@@ -20,16 +20,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-n@e_z-8w*b1_djsk!gbwfo!2($l6s*_$@1!8)!3j8%l8-!^_r6'
-
 import os
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = os.environ.get(
+    'SECRET_KEY',
+    'django-insecure-n@e_z-8w*b1_djsk!gbwfo!2($l6s*_$@1!8)!3j8%l8-!^_r6'
+)
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['.onrender.com']
+
+ALLOWED_HOSTS = ['.onrender.com', '127.0.0.1', 'localhost']
+
 
 
 
@@ -42,9 +45,30 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+        'cloudinary',
+    'cloudinary_storage',
     'app',
     'django.contrib.humanize',
+
+
+
 ]
+import cloudinary
+
+# cloudinary.config(
+#     cloud_name = os.environ.get("dyv7rke1w"),
+#     api_key = os.environ.get("145418996157557"),
+#     api_secret = os.environ.get("gD5w4bhw8gD9XBjvGYgnZsutbxM"),
+# )
+
+import cloudinary
+
+cloudinary.config(
+    cloudinary_url=os.environ.get("CLOUDINARY_URL")
+)
+
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -128,9 +152,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
 
 
 
